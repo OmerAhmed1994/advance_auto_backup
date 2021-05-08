@@ -221,13 +221,12 @@ class db_backup(models.Model):
         uri = 'http://' + self.host + ':' + self.port
         conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
         bkp = ''
+        bkp_folder = bkp_folder_path = None
         try:
             # try to backup database and write it away
             fp = open(file_path, 'wb')
             odoo.service.db.dump_db(self.name, fp, self.backup_type)
             fp.close()
-
-            bkp_folder = bkp_folder_path = None
             if self.backup_files:
                 fpath = self.files_path.split('/')[-1]
                 bkp_folder = '%s_%s.%s' % (fpath,date_today.strftime('%Y-%m-%d_%H_%M_%S'), "zip")
